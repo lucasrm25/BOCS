@@ -48,6 +48,11 @@ class LinReg:
 		# set data
 		self.xTrain = inputs['x_vals']
 		self.yTrain = inputs['y_vals']
+  
+		# ignore NaNs in the data
+		nan_idx = np.where(np.isnan(self.yTrain))[0]
+		self.xTrain = np.delete(self.xTrain, nan_idx, axis=0)
+		self.yTrain = np.delete(self.yTrain, nan_idx, axis=0)
 
 		# setup data for training
 		self.setupData()

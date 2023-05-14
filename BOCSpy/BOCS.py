@@ -9,6 +9,7 @@ import cvxpy as cvx
 from itertools import combinations
 from LinReg import LinReg
 from sample_models import sample_models
+import time
 
 def BOCS(inputs, order, acquisitionFn):
 	# BOCS: Function runs binary optimization using simulated annealing on
@@ -25,6 +26,8 @@ def BOCS(inputs, order, acquisitionFn):
 
 	# Set the number of SA reruns
 	SA_reruns = 5
+ 
+	start_time = time.time() 
 
 	# Extract inputs
 	n_vars  = inputs['n_vars']
@@ -83,6 +86,9 @@ def BOCS(inputs, order, acquisitionFn):
 
 		# re-train linear model
 		LR.train(inputs)
+
+		curr_time = time.time()
+		print(f'Iteration {t+1}/{n_iter} - time: {(curr_time-start_time)/60:.1f}min - new objective: {y_new:.3f} - best objective: {np.nanmin(inputs["y_vals"]):.3f}')
 
 		# Save results for optimal model
 		model_iter[t,:] = x_new
